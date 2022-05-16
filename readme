@@ -1,0 +1,37 @@
+#run backend
+1. install node and python
+2. pipenv shell
+3. python manage.py startapp todo
+    3.1 python ../manage.py startapp authentication
+4. Python manage.py migrate //in case that you want all datavase creation appear in db
+5. python manage.py runserver
+6. python manage.py makemigrations //in case that you want all datavase creation appear in db
+
+#run frontend
+1. npm start
+2. Kill all process with port 3000
+kill -9 $(lsof -ti:3000)
+
+#test api
+1. Login: authentication
+curl --header "Content-Type: application/json" -X POST http://127.0.0.1:8000/authentication/token/obtain/ --data '{"username":"fon","password":"ThisIsFon55"}'
+
+curl --header "Content-Type: application/json" -X POST http://127.0.0.1:8000/authentication/token/login/ --data '{"username":"fon","password":"ThisIsFon55"}'
+2. Refresh token
+curl --header "Content-Type: application/json" -X POST http://127.0.0.1:8000/authentication/token/refresh/ --data '{"refresh":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY1MjY5NDc2MSwiaWF0IjoxNjUxNDg1MTYxLCJqdGkiOiJlNzEzMGI2OTg1NGU0ZTk5YjFmYjkxYTc4YzdkMWE1ZSIsInVzZXJfaWQiOjF9.UOetstvsmjjV-9k8C7RLelxk-FMwcMcZWpvo1TDFkHs"}'
+3. Register
+curl --header "Content-Type: application/json" -X POST http://127.0.0.1:8000/authentication/account/register/ --data '{"email":"ichiro@mariners.com","username":"ichiro1","password":"konnichiwa"}'
+4. Get all task
+curl --header "Content-Type: application/json" --header "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUxNDM1NzkxLCJpYXQiOjE2NTE0MzU0OTEsImp0aSI6IjA5N2ZiMThjYzUwNjRiYzFhMzIyMGNlYmIxNjAxY2U3IiwidXNlcl9pZCI6MX0.-OOGdsBAn5eetB0CCmcyBsgwWpVfZiXZ9cSAKL-tsB0"  -X GET http://127.0.0.1:8000/api/tasks/
+5. Get all project
+curl --header "Content-Type: application/json" --header "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUxNDg3MTA0LCJpYXQiOjE2NTE0ODUxNjEsImp0aSI6IjlmY2EwZWZlMjAzZDQwNDI4ODA1MDY3ODEzNzc2NzUyIiwidXNlcl9pZCI6MX0.D319JNopoqMfRfLMTwWa4iIT1_9abt1k39VU3-_6G7M"  -X GET http://127.0.0.1:8000/project/
+6.
+curl --header "Content-Type: application/json" --header "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUxNDg1NDYxLCJpYXQiOjE2NTE0ODUxNjEsImp0aSI6ImNjN2EyODExZGE3ZjQ2MWJhZjRiZjhlZjIwY2VhMzFiIiwidXNlcl9pZCI6MX0.86T9arW9lQmqZPkHMwr85yPCl4uiW36ROehWwQEglIc"  -X POST http://127.0.0.1:8000/project/ --data {description:}
+
+
+#MYSQL 
+brew services start mysql
+
+
+access = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUxNDg1NDYxLCJpYXQiOjE2NTE0ODUxNjEsImp0aSI6ImNjN2EyODExZGE3ZjQ2MWJhZjRiZjhlZjIwY2VhMzFiIiwidXNlcl9pZCI6MX0.86T9arW9lQmqZPkHMwr85yPCl4uiW36ROehWwQEglIc
+refresh = eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY1MjY5NDc2MSwiaWF0IjoxNjUxNDg1MTYxLCJqdGkiOiJlNzEzMGI2OTg1NGU0ZTk5YjFmYjkxYTc4YzdkMWE1ZSIsInVzZXJfaWQiOjF9.UOetstvsmjjV-9k8C7RLelxk-FMwcMcZWpvo1TDFkHs
