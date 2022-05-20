@@ -1,5 +1,6 @@
 
 from rest_framework.views import APIView
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
 from rest_framework import status, permissions
@@ -41,3 +42,13 @@ class LogoutAndBlacklistRefreshTokenForUserView(APIView):
 class CustomTokenObtainPairView(TokenObtainPairView):
     # Replace the serializer with your custom
     serializer_class = CustomTokenObtainPairSerializer
+
+class GetUserList(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def get(self, request):
+        User = get_user_model()
+        users = User.objects.all()
+
+        return Response(users.values_list('id','username'))
+

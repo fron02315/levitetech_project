@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, {useState, useEffect} from "react";
 import axiosInstance from "../axiosApi";
 import { 
     DatePicker,
@@ -13,30 +13,28 @@ import {
 } from "reactstrap";
 
 const CreateTask = (props) =>{
+    const [userlist, toggleUserlist] = useState([]);
     const handleSubmit= (event)=>{
         try {
             event.preventDefault();
-            const axios = axiosInstance.post('/project/', {
-                sequence:100000000,
-                description: event.target.description.value,
-                flag: event.target.flag.value,
-                created_by: localStorage.getItem("userid")
-            });
-            axios.then(res => {
-                const data = {type:"project",message:"The new Project is created"};
-                //props.handleAlert(data);
-               // props.toggle();
-                //props.toggleProject([...props.project, res.data]);
-                // event.preventDefault();
-            }).catch(({response}) => {
-                
-                //props.handleAlert(response.data.detail);
-            });
+            
             
         } catch (error) {
             throw error;
         }
     }
+
+    useEffect(() => {
+        const axios = axiosInstance.get('/authentication/user/list/');
+        axios.then(res => {
+            console.log(res);
+            toggleUserlist(res.data);
+        }).catch(({response}) => {
+            
+        });
+
+    }, []);
+
     
         return (
 
@@ -48,7 +46,7 @@ const CreateTask = (props) =>{
                                 className="editable-textarea"
                                 type="text" 
                                 name="description" 
-                                placeholder = "description"
+                                placeholder = "Description"
                             />
                         </FormGroup>
                         
@@ -66,7 +64,7 @@ const CreateTask = (props) =>{
                                     <Select 
                                         mode="tags" 
                                         name="task_tag" 
-                                        style={{ width: 120 }} 
+                                        style={{ minWidth: 120 }} 
                                         placeholder="Tag"
                                     ></Select>
 
@@ -74,25 +72,36 @@ const CreateTask = (props) =>{
                             <div className="ps-1">
                                 <Select style={{ width: 120 }} name="task_priority" placeholder="Priority">
                                     <Select.Option value="1">
-                                        <i class="bi bi-circle-fill text-danger pe-1"></i>
+                                        <i className="bi bi-circle-fill text-danger pe-1"></i>
                                         High
                                     </Select.Option>
                                     <Select.Option value="2">
-                                        <i class="bi bi-circle-fill text-warning pe-1"></i>
+                                        <i className="bi bi-circle-fill text-warning pe-1"></i>
                                         Medium
                                     </Select.Option>
                                     <Select.Option value="3">
-                                        <i class="bi bi-circle-fill text-success pe-1"></i>
+                                        <i className="bi bi-circle-fill text-success pe-1"></i>
                                         Low
                                     </Select.Option>
                                 </Select>
                             </div>
                             <div className="ps-1">
-                                <Select style={{ width: 120 }} name="task_priority" placeholder="User">
-                                    <Select.Option value="1">
-                                        
-                                    </Select.Option>
-                                    
+                                <Select
+                                    showSearch
+                                    name="task_user"
+                                    placeholder="Select User"
+                                    optionFilterProp="children"
+                                    style={{ width: 120 }}
+                                >
+                                    {
+                                        userlist && userlist.map((user) => {
+                                            console.log(user);
+                                            return (
+                                            <Select.Option value={user[0]} key={"user"+user[0]}>{user[1]}</Select.Option>
+                                            );
+                                        })
+                                    }
+
                                 </Select>
                             </div>
                         </div>
@@ -100,8 +109,11 @@ const CreateTask = (props) =>{
                             
                         </div>
                 </div>
-                <Button color="primary" type="submit" form="create_project_form">Submit</Button>{' '}
-                <Button color="secondary" onClick={()=>props.toggleClose(false)}>Cancel</Button>
+                <div className="rounded ps-3 m-2">
+                    <Button color="primary" type="submit" form="create_project_form">Submit</Button>{' '}
+                    <Button color="secondary" onClick={()=>props.toggleClose(false)}>Cancel</Button>
+                </div>
+
             </Form>
         )
 

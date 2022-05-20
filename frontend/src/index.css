@@ -91,6 +91,7 @@ textarea.editable-textarea:hover{
   flex-wrap: nowrap;
 }
 
-.btn {
-  font-size: 0.9 rem;
+.btn, .user, .form-control {
+  font-size: 0.9rem;
 }
+

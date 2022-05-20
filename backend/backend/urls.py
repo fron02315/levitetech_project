@@ -41,6 +41,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('api/', include(todo_router.urls)),
     path('authentication/', include('backend.authentication.urls')),
+    path('user/', include('backend.authentication.urls')),
     path('project/', project_list, name="project-list"),
     path('project/<int:pk>', project_detail, name="project-details"),
     path('project/<int:proj>/todo', project_views.ProjectAdmin.as_view(), name="project-admin"),
