@@ -45,4 +45,5 @@ urlpatterns = [
     path('project/', project_list, name="project-list"),
     path('project/<int:pk>', project_detail, name="project-details"),
     path('project/<int:proj>/todo', project_views.ProjectAdmin.as_view(), name="project-admin"),
+    path('task/', project_views.taskAdd.as_view(), name="task-admin"),
 ]

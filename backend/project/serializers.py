@@ -56,3 +56,9 @@ class ProjectListSerializer(serializers.ModelSerializer):
         list_serializer_class = FilterActiveProjectListSerializer
         fields = ["id", "sequence", "description", "flag", "created_by", "created_at", "tasks"]
         extra_kwargs = {'created_by': {'default': serializers.CurrentUserDefault()}}
+
+class TaskAddSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ["id", "project_id", "task_id", "sequence", "description", "flag", "task_user", "task_priority", "task_tag", "task_deadline","created_by", "created_at"]
+        extra_kwargs = {'created_by': {'default': serializers.CurrentUserDefault()}}

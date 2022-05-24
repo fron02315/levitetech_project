@@ -184,6 +184,7 @@ const TodoDashboard = () => {
                         refreshList = {getProjectDetails}
                         toggleClose = {toggleTaskAdd}
                         queryResult = {queryResult}
+                        projectid = {projectid}
                     />
                 )
 

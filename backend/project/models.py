@@ -1,5 +1,5 @@
 from django.db import models
-
+import uuid
 
 # Create your models here.
 class Project(models.Model):
@@ -16,7 +16,7 @@ class Project(models.Model):
 
 class Task(models.Model):
     project_id = models.ForeignKey(Project, related_name='project', on_delete=models.CASCADE)
-    task_id = models.DecimalField(max_digits=10, decimal_places=0)
+    task_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     sequence = models.DecimalField(max_digits=10, decimal_places=0)
     description = models.CharField(max_length=100)
     flag = models.BooleanField(default=False)
@@ -34,7 +34,7 @@ class Task(models.Model):
 
 class Subtask(models.Model):
     task_id = models.ForeignKey(Task, related_name='subtask', on_delete=models.CASCADE)
-    subtask_id = models.DecimalField(max_digits=10, decimal_places=0)
+    subtask_id = models.UUIDField(default=uuid.uuid4, unique=True, db_index=True, editable=False)
     sequence = models.DecimalField(max_digits=10, decimal_places=0)
     description = models.CharField(max_length=100)
     flag = models.BooleanField(default=False)

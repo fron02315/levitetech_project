@@ -4,7 +4,8 @@ from project.models import Project, Task, Subtask
 from rest_framework import viewsets, generics, permissions,status
 from project.serializers import (
     ProjectSerializer,
-    ProjectListSerializer
+    ProjectListSerializer,
+    TaskAddSerializer
 )
 
 class ProjectList(viewsets.ModelViewSet):
@@ -25,3 +26,8 @@ class ProjectAdmin(generics.ListCreateAPIView):
     def get_queryset(self):
         proj_pk = self.kwargs["proj"]
         return Project.objects.filter(pk= proj_pk)
+
+class taskAdd(generics.ListCreateAPIView):
+    serializer_class = TaskAddSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
