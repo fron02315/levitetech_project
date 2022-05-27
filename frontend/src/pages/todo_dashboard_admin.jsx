@@ -1,23 +1,26 @@
 import React, {useState, useEffect, useRef} from "react";
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../axiosApi";
+import TaskElement from "../elements/TaskElement";
 import CreateTask from "../elements/CreateTask";
+
 import {
-    ListGroup,
     ListGroupItem,
-    Dropdown,
     Popover,
-    DropdownMenu,
-    PopoverBody,
-    DropdownToggle,
-    DropdownItem
+    PopoverBody
 } from 'reactstrap'
+
+import { 
+    Button
+} from 'antd';
 
 const TodoDashboard = () => {
     const [toggleRefreshProjectlist] = useOutletContext();
     const [popoverOpen, togglePopover] = useState(false);
     const [TaskAdd,toggleTaskAdd] = useState(false);
+    const [refreshTasklist, toggleRefreshTasklist]= useState(true);
     const [sortResult, setSortResult] = useState("default");
     const [queryResult, setQueryResult] = useState([]);
     const { projectid } = useParams();
@@ -67,9 +70,20 @@ const TodoDashboard = () => {
         }
     };
 
+    const handleOnDragEnd=(result) =>{
+        if (!result.destination) return;
+    console.log(result);
+        // const items = Array.from(characters);
+        // const [reorderedItem] = items.splice(result.source.index, 1);
+        // items.splice(result.destination.index, 0, reorderedItem);
+    
+        //updateCharacters(items);
+      }
+
     useEffect(() => {
         getProjectDetails();
-    }, [projectid]);
+
+    }, [projectid, refreshTasklist]);
 
     const getProjectDetails = () => {
         const axios = axiosInstance.get(`/project/${projectid}/todo`);
@@ -139,60 +153,47 @@ const TodoDashboard = () => {
 
                 </div>
             </div>
-            <ListGroup flush>
-                <ListGroupItem action href="#" tag="a"  >
-                    <div className="d-flex justify-content-between">
-                        <div>
-                            <i className="bi bi-check-circle pe-2"></i>
-                            Fon's asshole itchy :D
-                            <span className="badge bg-danger ms-2">High</span>
-                        </div>
-                        <div className="onhover-wrap">
-                            <button type="button" className="btn btn-light onhover-button"><i className="bi bi-card-text"></i></button>
-                            <button type="button" className="btn btn-light onhover-button"><i className="bi bi-calendar-event"></i></button>
-                        </div>
-                    </div>
-                </ListGroupItem>
-                <ListGroupItem action href="#" tag="a" >
-                    <div className="d-flex justify-content-between">
-                        <div>
-                            <i className="bi bi-check-circle pe-2"></i>
-                            Mybababy has a big dick
-                            <span className="badge bg-warning ms-2">Medium</span>
-                        </div>
-                        <div className="onhover-wrap">
-                            <button type="button" className="btn btn-light onhover-button"><i className="bi bi-card-text"></i></button>
-                            <button type="button" className="btn btn-light onhover-button"><i className="bi bi-calendar-event"></i></button>
-                        </div>
-                    </div>
-                </ListGroupItem>
+            <DragDropContext onDragEnd={handleOnDragEnd}>
+                <Droppable  droppableId="characters">
+                    {(provided) => (
+                        <ul className="list-group list-group-flush" {...provided.droppableProps} ref={provided.innerRef}>
+                            {queryResult["tasks"] && queryResult["tasks"].map((element)=>{
+                                return(
+                                    
+                                    <TaskElement element={element}/>
+                                );
+                            })}
 
-                {
-                !TaskAdd && (
-                    
-                    <ListGroupItem action href="#" tag="a" className="hover-text-red">
-                        <div className="p-2 pe-auto" onClick={() => toggleTaskAdd(!TaskAdd)}>
-                            <i className="bi bi-plus-lg"></i> Add new Task  
-                        </div>
-                    </ListGroupItem>
-                )
 
-                }    
-                {
-                TaskAdd && (
-                    <CreateTask
-                        refreshList = {getProjectDetails}
-                        toggleClose = {toggleTaskAdd}
-                        queryResult = {queryResult}
-                        projectid = {projectid}
-                    />
-                )
+                            {
+                            !TaskAdd && (
+                                
+                                <ListGroupItem action href="#" tag="a" className="hover-text-red">
+                                    <div className="p-2 pe-auto" onClick={() => toggleTaskAdd(!TaskAdd)}>
+                                        <i className="bi bi-plus-lg"></i> Add new Task  
+                                    </div>
+                                </ListGroupItem>
+                            )
 
-                }           
-                
+                            }    
+                            {
+                            TaskAdd && (
+                                <CreateTask
+                                    refreshList = {getProjectDetails}
+                                    toggleClose = {toggleTaskAdd}
+                                    queryResult = {queryResult}
+                                    projectid = {projectid}
+                                    toggleRefreshTasklist = {toggleRefreshTasklist}
+                                />
+                            )
 
-            </ListGroup>
+                            }           
+                            
 
+                        </ul>
+                    )}
+                </Droppable>
+            </DragDropContext>
             
         </section>
 

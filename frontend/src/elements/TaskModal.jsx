@@ -10,7 +10,7 @@ import {
     Button
 } from "reactstrap";
 
-const CreateTask = (props) =>{
+const TaskModal = (props) =>{
     const [userlist, toggleUserlist] = useState([]);
     const handleSubmit= (values)=>{
         try {
@@ -42,13 +42,20 @@ const CreateTask = (props) =>{
     
 
     useEffect(() => {
-        const axios = axiosInstance.get('/authentication/user/list/');
-        axios.then(res => {
-            toggleUserlist(res.data);
-        }).catch(({response}) => {
-            
+        if(userlist){
+            const axios = axiosInstance.get('/authentication/user/list/');
+            axios.then(res => {
+                toggleUserlist(res.data);
+            }).catch(({response}) => {
+                
+            });
+        }
+        const axios = axiosInstance.get(`/task/${prop.task_id}`);
+            axios.then(res => {
+                toggleUserlist(res.data);
+            }).catch(({response}) => {
+                
         });
-
     }, []);
 
         return (
@@ -136,4 +143,4 @@ const CreateTask = (props) =>{
 
 }
 
-export default CreateTask;
+export default TaskModal;

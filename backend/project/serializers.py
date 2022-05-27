@@ -51,6 +51,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
 class ProjectListSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
+
     class Meta:
         model = Project
         list_serializer_class = FilterActiveProjectListSerializer
