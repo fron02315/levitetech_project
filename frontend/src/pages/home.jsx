@@ -1,17 +1,4 @@
 import React from "react";
-import axiosInstance from "../axiosApi";
-import Testelement from "../elements/Testelement";
-import {
-    Button,
-    Section,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Form,
-    FormGroup,
-    Input,
-    Label
-} from 'reactstrap'
 
 const Home = () => {
     return (
@@ -20,7 +7,6 @@ const Home = () => {
                 <div className="col-12">
                     Hello { localStorage.getItem('user')}!
                 </div>
-                <Testelement />
             </div>
         </section>
 

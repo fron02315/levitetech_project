@@ -6,7 +6,7 @@ const TagBadge = (props) => {
         <Fragment>
             {tagarr && tagarr.map((element)=>{
                 return  (
-                    <span className="badge bg-secondary ms-2"  title="Tag" >
+                    <span key={element} className="badge bg-secondary ms-2"  title="Tag" >
                         <i className="bi bi-tag pe-1"></i>
                         {element}
                     </span>

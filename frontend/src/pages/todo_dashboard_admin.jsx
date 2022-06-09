@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from "react";
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useOutletContext } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../axiosApi";
@@ -12,20 +12,19 @@ import {
     PopoverBody
 } from 'reactstrap'
 
-import { 
-    Button
-} from 'antd';
+
 
 const TodoDashboard = () => {
+
     const [toggleRefreshProjectlist] = useOutletContext();
     const [popoverOpen, togglePopover] = useState(false);
     const [TaskAdd,toggleTaskAdd] = useState(false);
     const [refreshTasklist, toggleRefreshTasklist]= useState(true);
     const [sortResult, setSortResult] = useState("default");
     const [queryResult, setQueryResult] = useState([]);
+    const [todoError, setTodoError] = useState(null);
     const { projectid } = useParams();
     const $titleInputRef = useRef();
-    const [todoError, setTodoError] = useState(null);
 
     const handlePopover=()=>{
         togglePopover(!popoverOpen);
@@ -57,7 +56,6 @@ const TodoDashboard = () => {
                     sequence: queryResult.sequence
                 });
                 axios.then(res => {
-                    const data = {type:"project",message:"The new Project is created"};
                     getProjectDetails();
                     toggleRefreshProjectlist(true);
                 }).catch(({response}) => {
@@ -70,15 +68,19 @@ const TodoDashboard = () => {
         }
     };
 
-    const handleOnDragEnd=(result) =>{
+    function handleOnDragEnd(result) {
         if (!result.destination) return;
-    console.log(result);
-        // const items = Array.from(characters);
-        // const [reorderedItem] = items.splice(result.source.index, 1);
-        // items.splice(result.destination.index, 0, reorderedItem);
-    
-        //updateCharacters(items);
-      }
+
+        const items = Array.from(queryResult.tasks);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+
+        let temp_arr = queryResult;
+        temp_arr.tasks = items;
+
+        //Todo: apply to backend
+        //setQueryResult(items);
+    }
 
     useEffect(() => {
         getProjectDetails();
@@ -100,7 +102,7 @@ const TodoDashboard = () => {
             <div className="d-flex  justify-content-between pb-2 border-bottom">
                 <div>
 
-                    <textarea 
+                    <input 
                         className="editable-textarea" 
                         placeholder="Project Name"
                         defaultValue={queryResult["description"]}
@@ -153,48 +155,53 @@ const TodoDashboard = () => {
 
                 </div>
             </div>
+            
+
             <DragDropContext onDragEnd={handleOnDragEnd}>
-                <Droppable  droppableId="characters">
+                <Droppable droppableId="characters">
                     {(provided) => (
                         <ul className="list-group list-group-flush" {...provided.droppableProps} ref={provided.innerRef}>
-                            {queryResult["tasks"] && queryResult["tasks"].map((element)=>{
-                                return(
-                                    
-                                    <TaskElement element={element}/>
-                                );
-                            })}
 
+                            {queryResult["tasks"] && queryResult["tasks"].map((element, index) => {
+                            return (
+                                <TaskElement 
+                                    key={index} 
+                                    index={index} 
+                                    element={element}
+                                    toggleRefreshTasklist = {toggleRefreshTasklist}
+                                />
+                            );
+                            })}
+                            {provided.placeholder}
 
                             {
-                            !TaskAdd && (
-                                
-                                <ListGroupItem action href="#" tag="a" className="hover-text-red">
-                                    <div className="p-2 pe-auto" onClick={() => toggleTaskAdd(!TaskAdd)}>
-                                        <i className="bi bi-plus-lg"></i> Add new Task  
-                                    </div>
-                                </ListGroupItem>
-                            )
+                                !TaskAdd && (
+                                    
+                                    <ListGroupItem action href="#" tag="a" className="hover-text-red">
+                                        <div className="p-2 pe-auto" onClick={() => toggleTaskAdd(!TaskAdd)}>
+                                            <i className="bi bi-plus-lg"></i> Add new Task  
+                                        </div>
+                                    </ListGroupItem>
+                                )
 
                             }    
                             {
-                            TaskAdd && (
-                                <CreateTask
-                                    refreshList = {getProjectDetails}
-                                    toggleClose = {toggleTaskAdd}
-                                    queryResult = {queryResult}
-                                    projectid = {projectid}
-                                    toggleRefreshTasklist = {toggleRefreshTasklist}
-                                />
-                            )
+                                TaskAdd && (
+                                    <CreateTask
+                                        refreshList = {getProjectDetails}
+                                        toggleClose = {toggleTaskAdd}
+                                        queryResult = {queryResult}
+                                        projectid = {projectid}
+                                        toggleRefreshTasklist = {toggleRefreshTasklist}
+                                    />
+                                )
 
-                            }           
-                            
-
-                        </ul>
+                            }       
+                    </ul>
                     )}
                 </Droppable>
-            </DragDropContext>
-            
+            </DragDropContext> 
+      
         </section>
 
     )

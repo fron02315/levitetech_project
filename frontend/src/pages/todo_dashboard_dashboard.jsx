@@ -145,7 +145,7 @@ const TodoDashboard = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <i className="bi bi-check-circle pe-2"></i>
-                                    Fon's asshole itchy :D
+                                    Clear up tax
                                     <span className="badge bg-danger ms-2">High</span>
                                 </div>
                                 <div className="onhover-wrap">
@@ -158,7 +158,7 @@ const TodoDashboard = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <i className="bi bi-check-circle pe-2"></i>
-                                    Mybababy has a big dick
+                                    Throw garbage
                                     <span className="badge bg-warning ms-2">Medium</span>
                                 </div>
                                 <div className="onhover-wrap">
@@ -176,7 +176,7 @@ const TodoDashboard = () => {
                         <ListGroupItem color="success">
                             <div className="d-flex justify-content-between">
                                 <div>
-                                    Good guy of the year
+                                    Get package from SF box
                                 </div>
                                 <div>
                                     +
@@ -184,7 +184,7 @@ const TodoDashboard = () => {
                             </div>
                         </ListGroupItem>
                         <ListGroupItem action href="#" tag="a" >
-                            <i className="bi bi-check-circle"></i> Ice bear is a good guy
+                            <i className="bi bi-check-circle"></i> Cook the dinner
                         </ListGroupItem>
                     </ListGroup>
 

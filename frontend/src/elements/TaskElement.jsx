@@ -2,7 +2,8 @@ import React, { useState, Fragment } from "react";
 import { Draggable } from 'react-beautiful-dnd';
 import PriorityBadge from "../elements/PriorityBadge";
 import TagBadge from "../elements/TagBadge";
-import { ListGroupItem } from "reactstrap";
+import UpdateTask from "../elements/UpdateTask";
+import axiosInstance from "../axiosApi";
 import { 
     Button,Modal 
 } from 'antd';
@@ -15,27 +16,60 @@ const TaskElement = (props) =>{
     }
 
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isMouseHover, setIsMouseHover] = useState(false);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
+    const onMouseHoverHandler = () =>{
+        setIsMouseHover(!isMouseHover);
+    }
+
+    const onClickFlag = (event) => {
+        try {
+            event.preventDefault();
+            const axios = axiosInstance.patch(`/task/${props.element.id}`, {
+                flag: !props.element.flag
+            });
+            axios.then(res => {
+                props.toggleRefreshTasklist((prevState) => (!prevState));
+            }).catch(({response}) => {
+
+            });
+            
+        } catch (error) {
+            throw error;
+        }
+    }
     return (
         <Fragment>
-            <Draggable key={`dnd-drag-${props.element.task_id}`} draggableId={props.element.id} index={props.element.id}>
+            <Draggable key={props.element.task_id} draggableId={props.element.task_id} index={props.index}>
                 {(provided) => (
-                    <ListGroupItem action href="#" tag="a"  ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                    <li className="list-group-item"  key={props.element.id}  ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        
                         <div className="d-flex justify-content-between">
                             <div>
-                                <i className="bi bi-check-circle pe-2"></i>
-                                {props.element.description}
+                                <span role="button" onClick={onClickFlag} onMouseEnter={onMouseHoverHandler} onMouseLeave={onMouseHoverHandler}>
+                                    {(!isMouseHover &&  !props.element.flag) || (isMouseHover && props.element.flag ) ? (
+                                        <i className="bi bi-circle pe-2"></i>
+                                    ):(
+                                        <i className="bi bi-check-circle pe-2"></i>
+                                    )}
+
+                                    
+                                </span>
+                                <span className={(props.element.flag ? 'task-description-flag':'' )}>
+                                    {props.element.description}
+                                </span>
                                 <PriorityBadge priority = {props.element.task_priority} />
                             </div>
                             <div className="onhover-wrap">
@@ -59,38 +93,26 @@ const TaskElement = (props) =>{
                             )}
                             
                         </div>
-                    </ListGroupItem>
+                    </li>
                 )}
-                
             </Draggable>
-            
 
-
-        <Modal 
-            title="Basic Modal" 
-            visible={isModalVisible} 
-            onOk={handleOk} 
-            onCancel={handleCancel}
-            footer={[
-                <Button form="task_modal" key="submit" type="primary" htmlType="submit">
-                    Submit
-                </Button>,
-                <Button
-                    key="link"
-                    href="https://google.com"
-                    type="secondary"
-                    onClick={handleOk}
-                >
-                    Cancel
-                </Button>,
-                ]}
-        >
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-        </Modal>
+            <Modal 
+                title=''
+                visible={isModalVisible} 
+                onOk={handleOk} 
+                onCancel={handleCancel}
+                footer={null}
+                width={1000}
+            >
+                <UpdateTask
+                    element = {props.element}
+                    toggleRefreshTasklist = {props.toggleRefreshTasklist}
+                />
+               
+            </Modal>
       
-      </Fragment>
+        </Fragment>
     );
 }
 

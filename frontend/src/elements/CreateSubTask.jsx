@@ -1,3 +1,5 @@
+
+
 import React, {useState, useEffect} from "react";
 import axiosInstance from "../axiosApi";
 import { 
@@ -10,13 +12,14 @@ import {
     Button
 } from "reactstrap";
 
-const CreateTask = (props) =>{
+const CreateComment = (props) =>{
     const [userlist, toggleUserlist] = useState([]);
     const handleSubmit= (values)=>{
+        //Todo: finish this api
         try {
-            console.log(props.projectid);
-            const axios = axiosInstance.post('/task/', { 
-                project_id:props.projectid,
+            console.log(props.task_id);
+            const axios = axiosInstance.post('/subtask/', { 
+                task_id:props.task_id,
                 sequence:100000000,
                 description: values.description,
                 task_user: values.task_user,
@@ -55,7 +58,7 @@ const CreateTask = (props) =>{
 
             <Form id="create_project_form" onSubmit={e => e.preventDefault()} onFinish={handleSubmit} >
                 
-                <div className="border rounded p-3 m-2">
+                <div className="border rounded p-3 pb-0">
                     <Form.Item name="description" rules={[{ required: true }]}>                 
                         <Input 
                             className="editable-textarea"
@@ -63,31 +66,30 @@ const CreateTask = (props) =>{
                             placeholder = "Description"
                         />
                     </Form.Item>
-                    <div className="d-flex">
-                        <div className="ps-1">
-                            <Form.Item name="task_deadline">
+                    <div className="row">
+                        <div className="col-md-3 col-sm-12">
+                            <Form.Item name="subtask_deadline">
                                 <DatePicker
-                                    name="task_deadline"
+                                    name="subtask_deadline"
                                     placeholder = "Deadline"
-                                    style={{ width: 130 }} 
+                                    style={{ width: "100%" }} 
                                     format={'DD/MM/YYYY'}
                                 />
                             </Form.Item>
                         </div >
 
-                        <div className="ps-1">
-                            <Form.Item name="task_tag">
+                        <div className="col-md-3 col-sm-12">
+                            <Form.Item name="subtask_tag">
                                 <Select 
                                     mode="tags" 
-                                    data-name="task_tag" 
-                                    style={{ minWidth: 120 }} 
+                                    data-name="subtask_tag" 
                                     placeholder="Tag"
                                 ></Select>
                             </Form.Item>
                         </div>
-                        <div className="ps-1">
-                            <Form.Item name="task_priority" rules={[{ required: true }]}>
-                                <Select style={{ width: 120 }} placeholder="Priority" required >
+                        <div className="col-md-3 col-sm-12">
+                            <Form.Item name="subtask_priority" rules={[{ required: true }]}>
+                                <Select placeholder="Priority" required >
                                     <Select.Option value="1">
                                         <i className="bi bi-circle-fill text-danger pe-1"></i>
                                         High
@@ -103,14 +105,13 @@ const CreateTask = (props) =>{
                                 </Select>
                             </Form.Item>
                         </div>
-                        <div className="ps-1">
-                            <Form.Item name="task_user">
+                        <div className="col-md-3 col-sm-12">
+                            <Form.Item name="subtask_user">
                                 <Select
                                     showSearch
-                                    data-name="task_user"
+                                    data-name="subtask_user"
                                     placeholder="Select User"
                                     optionFilterProp="children"
-                                    style={{ width: 120 }}
                                 >
                                     {
                                         userlist && userlist.map((user) => {
@@ -125,10 +126,10 @@ const CreateTask = (props) =>{
                         </div>
                     </div>              
                 </div>
-                <div className="rounded ps-3 m-2">
+                <div className="rounded ps-3 m-2 text-right">
                     <Form.Item >
                         <Button color="primary" type="submit" form="create_project_form">Submit</Button>{' '}
-                        <Button color="secondary" onClick={()=>props.toggleClose(false)}>Cancel</Button>
+                        <Button color="secondary" onClick={()=>props.toggleSubTaskAdd(false)}>Cancel</Button>
                     </Form.Item>   
                 </div>
 
@@ -137,4 +138,4 @@ const CreateTask = (props) =>{
 
 }
 
-export default CreateTask;
+export default CreateComment;

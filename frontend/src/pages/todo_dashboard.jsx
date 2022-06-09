@@ -1,15 +1,7 @@
 import React from "react";
-import axiosInstance from "../axiosApi";
 import {
     ListGroup,
-    ListGroupItem,
-    ModalHeader,
-    ModalBody,
-    ModalFooter,
-    Form,
-    FormGroup,
-    Input,
-    Label
+    ListGroupItem
 } from 'reactstrap'
 
 const TodoDashboard = () => {
@@ -35,7 +27,7 @@ const TodoDashboard = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <i className="bi bi-check-circle pe-2"></i>
-                                    Fon's asshole itchy :D
+                                    Clear up tax
                                     <span className="badge bg-danger ms-2">High</span>
                                 </div>
                                 <div className="onhover-wrap">
@@ -48,7 +40,7 @@ const TodoDashboard = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <i className="bi bi-check-circle pe-2"></i>
-                                    Mybababy has a big dick
+                                    Throw garbage
                                     <span className="badge bg-warning ms-2">Medium</span>
                                 </div>
                                 <div className="onhover-wrap">
@@ -58,13 +50,13 @@ const TodoDashboard = () => {
                             </div>
                         </ListGroupItem>
                         <ListGroupItem action  href="#" tag="a">
-                            <i className="bi bi-circle"></i>  Panda shit on the macbook
+                            <i className="bi bi-circle"></i>  Get package from SF box
                         </ListGroupItem>
                         <ListGroupItem action  href="#" tag="a">
-                            <i className="bi bi-circle"></i> Grizz want to slap panda ass
+                            <i className="bi bi-circle"></i> Sleep on time!!
                         </ListGroupItem>
                         <ListGroupItem action  href="#" tag="a">
-                            <i className="bi bi-check-circle"></i> Ice bear is a good guy
+                            <i className="bi bi-check-circle"></i> Put a cake in freezer
                         </ListGroupItem>
                     </ListGroup>
 
@@ -85,7 +77,7 @@ const TodoDashboard = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <i className="bi bi-check-circle pe-2"></i>
-                                    Fon's asshole itchy :D
+                                    Job interview at Casetify :)
                                     <span className="badge bg-danger ms-2">High</span>
                                 </div>
                                 <div className="onhover-wrap">
@@ -98,7 +90,7 @@ const TodoDashboard = () => {
                             <div className="d-flex justify-content-between">
                                 <div>
                                     <i className="bi bi-check-circle pe-2"></i>
-                                    Mybababy has a big dick
+                                    Extend medical insurance
                                     <span className="badge bg-warning ms-2">Medium</span>
                                 </div>
                                 <div className="onhover-wrap">
@@ -108,13 +100,13 @@ const TodoDashboard = () => {
                             </div>
                         </ListGroupItem>
                         <ListGroupItem action  href="#" tag="a">
-                            <i className="bi bi-circle"></i>  Panda shit on the macbook
+                            <i className="bi bi-circle"></i>  MPF - change the address
                         </ListGroupItem>
                         <ListGroupItem action  href="#" tag="a">
-                            <i className="bi bi-circle"></i> Grizz want to slap panda ass
+                            <i className="bi bi-circle"></i> Book the restuarant for my bd 
                         </ListGroupItem>
                         <ListGroupItem action  href="#" tag="a">
-                            <i className="bi bi-check-circle"></i> Ice bear is a good guy
+                            <i className="bi bi-check-circle"></i> Buy dress for the party
                         </ListGroupItem>
                     </ListGroup>
 
