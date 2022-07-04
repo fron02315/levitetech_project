@@ -1,5 +1,3 @@
-
-
 import React, {useState, useEffect} from "react";
 import axiosInstance from "../axiosApi";
 import { 
@@ -11,22 +9,22 @@ import {
 import {
     Button
 } from "reactstrap";
+import moment from 'moment'
 
 const CreateComment = (props) =>{
     const [userlist, toggleUserlist] = useState([]);
     const handleSubmit= (values)=>{
         //Todo: finish this api
         try {
-            console.log(props.task_id);
             const axios = axiosInstance.post('/subtask/', { 
                 task_id:props.task_id,
                 sequence:100000000,
                 description: values.description,
-                task_user: values.task_user,
+                subtask_user: values.subtask_user,
                 flag: 0,
-                task_priority: values.task_priority,
-                task_tag: values.task_tag && values.task_tag.join(),
-                task_deadline: values.task_deadline && values.task_deadline.format("YYYY-MM-DD 00:00:00"),
+                subtask_priority: values.subtask_priority,
+                subtask_tag: values.subtask_tag && values.subtask_tag.join(),
+                subtask_deadline: values.subtask_deadline && values.subtask_deadline.format("YYYY-MM-DD 00:00:00"),
                 created_by: localStorage.getItem("userid")
             });
             axios.then(res => {
@@ -56,7 +54,11 @@ const CreateComment = (props) =>{
 
         return (
 
-            <Form id="create_project_form" onSubmit={e => e.preventDefault()} onFinish={handleSubmit} >
+            <Form id="create_project_form" 
+                onSubmit={e => e.preventDefault()} 
+                onFinish={handleSubmit} 
+                className="p-2" 
+            >
                 
                 <div className="border rounded p-3 pb-0">
                     <Form.Item name="description" rules={[{ required: true }]}>                 

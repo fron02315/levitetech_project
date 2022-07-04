@@ -14,7 +14,6 @@ const CreateTask = (props) =>{
     const [userlist, toggleUserlist] = useState([]);
     const handleSubmit= (values)=>{
         try {
-            console.log(props.projectid);
             const axios = axiosInstance.post('/task/', { 
                 project_id:props.projectid,
                 sequence:100000000,

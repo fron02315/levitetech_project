@@ -51,11 +51,12 @@ class Subtask(models.Model):
         ordering = ['sequence']
 
 class Comment(models.Model):
-    task_id = models.ForeignKey(Task, related_name='comment', on_delete=models.CASCADE)
+    task_id = models.ForeignKey(Task, related_name='comments', on_delete=models.CASCADE)
     comment = models.CharField(max_length=100)
+    comment_status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey('auth.User', related_name='created_by_comment', on_delete=models.DO_NOTHING)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta():
-        ordering = ['created_at']
+        ordering = ['-created_at']

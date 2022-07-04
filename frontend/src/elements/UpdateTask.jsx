@@ -1,10 +1,9 @@
 import React, { Fragment, useEffect, useState} from "react";
 import axiosInstance from "../axiosApi";
 import SubtaskList from "../pages/SubtaskList";
+import CommentList from "../pages/CommentList";
 import CreateSubTask from "../elements/CreateSubTask";
 import CreateComment from "../elements/CreateComment";
-import { taskPriorityColorsClass } from "../style/todo";
-import { TaskPriority } from "../constant/todo";
 
 import moment from 'moment'
 import { 
@@ -30,7 +29,6 @@ const UpdateTask = (props) =>{
     }, []);
 
     const UpdateElement= (field, value)=>{
-        console.log(value);
         var field_arr = new FormData();
         //Todo: apply ALL to backend
         
@@ -83,22 +81,25 @@ const UpdateTask = (props) =>{
                         </div>
                         <div className="row">
                             <div className="col">
-                                {props.element.subtask && (
+                                {props.element.subtasks && props.element.subtasks.length > 0 && (
                                     <Collapse defaultActiveKey={['1']} ghost>
-                                        <Collapse.Panel header="SubTask" key="1">
+                                        <Collapse.Panel header="SubTask" key="1" >
                                                 <SubtaskList 
-                                                    subtask= {props.element.subtask}
+                                                    subtask= {props.element.subtasks}
+                                                    toggleRefreshTasklist = {props.toggleRefreshTasklist}
+                                                    task_id = {props.element.id}
                                                 />
                                             </Collapse.Panel>
                                     </Collapse>
                                 )}
 
-                                {SubTaskAdd && !props.element.subtask ? (
+                                {SubTaskAdd && (!props.element.subtasks || (props.element.subtasks && props.element.subtasks.length == 0)) && (
                                     <CreateSubTask
                                         toggleSubTaskAdd = {toggleSubTaskAdd} 
                                         task_id = {props.element.id}
                                     />
-                                ):(
+                                )}
+                                {!SubTaskAdd && (!props.element.subtasks || (props.element.subtasks && props.element.subtasks.length == 0)) && (
                                     <ul className="list-group list-group-flush" >
                                         <li  role="button" className="list-group-item hover-text-red border-bottom">
                                             <div className="p-2 pe-auto" onClick={() => toggleSubTaskAdd(!SubTaskAdd)}>
@@ -108,12 +109,23 @@ const UpdateTask = (props) =>{
                                     </ul>
                                 )}
 
-                                {!props.element.comment && (
+                                {props.element.comments && props.element.comments.length > 0 && (
+                                    <Collapse defaultActiveKey={['2']} ghost>
+                                        <Collapse.Panel header="Comment" key="2" >
+                                                <CommentList 
+                                                    comments= {props.element.comments}
+                                                    toggleRefreshTasklist = {props.toggleRefreshTasklist}
+                                                    task_id = {props.element.id}
+                                                />
+                                            </Collapse.Panel>
+                                    </Collapse>
+                                )}
+                                {(!props.element.comments || (props.element.comments && props.element.comments.length == 0)) && (
                                     <CreateComment
+                                        task_id = {props.element.id}
                                         toggleCommentAdd = {toggleCommentAdd} 
                                     />
                                 )}
-
 
                             </div>
                         </div>

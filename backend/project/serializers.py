@@ -12,6 +12,11 @@ class FilterActiveSubtaskListSerializer(serializers.ListSerializer):
         data = data.filter(subtask_status=True)
         return super(FilterActiveSubtaskListSerializer, self).to_representation(data)
 
+class FilterActiveCommentListSerializer(serializers.ListSerializer):
+    def to_representation(self, data):
+        data = data.filter(comment_status=True)
+        return super(FilterActiveCommentListSerializer, self).to_representation(data)
+
 class FilterActiveProjectListSerializer(serializers.ListSerializer):
     def to_representation(self, data):
         data = data.filter(project_status=True)
@@ -32,13 +37,14 @@ class SubTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subtask
         list_serializer_class = FilterActiveSubtaskListSerializer
-        fields = ["id", "subtask_id", "sequence", "description", "flag", "subtask_user", "subtask_priority", "subtask_tag", "subtask_deadline","created_by", "created_at"]
+        fields = ["id","task_id", "subtask_id", "sequence", "description", "flag", "subtask_user", "subtask_priority", "subtask_tag", "subtask_deadline","created_by", "created_at"]
 
 class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ["id", "comment","created_by", "created_at"]
+        list_serializer_class = FilterActiveCommentListSerializer
+        fields = ["id", "task_id","comment","comment_status","created_by", "created_at"]
 
 class TaskSerializer(serializers.ModelSerializer):
     subtasks = SubTaskSerializer(many=True, read_only=True)

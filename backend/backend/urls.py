@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf.urls import include
 from todo import views as todo_views
 from project import views as project_views
-from project.views import  ProjectList, TaskList 
+from project.views import  ProjectList, TaskList, SubTaskList, CommentList
 from rest_framework import routers
 
 
@@ -49,11 +49,22 @@ task_detail = TaskList.as_view({
 })
 
 
-subtask_list = SubList.as_view({
+subtask_list = SubTaskList.as_view({
     'get': 'list',
     'post': 'create'
 })
-subtask_detail = SubList.as_view({
+subtask_detail = SubTaskList.as_view({
+    'get': 'retrieve',
+    'put': 'update',
+    'patch': 'partial_update',
+    'delete': 'destroy'
+})
+
+comment_list = CommentList.as_view({
+    'get': 'list',
+    'post': 'create'
+})
+comment_detail = CommentList.as_view({
     'get': 'retrieve',
     'put': 'update',
     'patch': 'partial_update',
@@ -69,7 +80,9 @@ urlpatterns = [
     path('project/<int:pk>', project_detail, name="project-details"),
     path('project/<int:proj>/todo', project_views.ProjectAdmin.as_view(), name="project-admin"),
     path('task/', task_list, name="task-list"),
-    path('task/<int:pk>', task_detail, name="task-admin")
+    path('task/<int:pk>', task_detail, name="task-admin"),
     path('subtask/', subtask_list, name="subtask-list"),
-    path('subtask/<int:pk>', subtask_detail, name="subtask-admin")
+    path('subtask/<int:pk>', subtask_detail, name="subtask-admin"),
+    path('comment/', comment_list, name="comment-list"),
+    path('comment/<int:pk>', comment_detail, name="comment-admin")
 ]

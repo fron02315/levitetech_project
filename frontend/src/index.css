@@ -103,3 +103,6 @@ textarea.editable-textarea:hover{
   text-decoration: none;
 }
 
+.ant-collapse-header {
+  border-bottom: 1px solid #dee2e6!important;
+}

@@ -10,28 +10,33 @@ import {
 
 
 const Editor = ({value,onChange,submitting,handleSubmit}) => (
-  <Form>
+  <Form 
+    initialValues={{
+      ["comment"]: value
+    }}
+  >
     <Form.Item name="comment">
       <Input.TextArea rows={4} value={value} onChange={onChange} />
     </Form.Item>
     <Form.Item>
       <Button htmlType="submit" loading={submitting} onClick={handleSubmit} type="primary">
-        Add Comment
+        Save
+      </Button>{' '}
+      <Button onClick={handleSubmit} type="warning">
+        Cancel
       </Button>
     </Form.Item>
   </Form>
 );
 
-const CreateComment = (props) =>{
-    
+const EditComment = (props) =>{
   const [submitting, setSubmitting] = useState(false);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState(props.comment.comment);
+
   const handleSubmit = () => {
     setSubmitting(true);
-    const axios = axiosInstance.post(`/comment/`, {
-      task_id: props.task_id,
-      comment : comment,
-      created_by: localStorage.getItem("userid")
+    const axios = axiosInstance.patch(`/comment/${props.comment.id}`, {
+      comment : comment
     });
     axios.then(res => {
         setSubmitting(false);
@@ -43,9 +48,9 @@ const CreateComment = (props) =>{
   };
 
   const onChange = (e) => {
+    console.log(e.target.value);
     setComment(e.target.value);
   }
-  
     return (
 
         <Comment
@@ -56,6 +61,7 @@ const CreateComment = (props) =>{
                   onChange={onChange}
                   submitting={submitting}
                   handleSubmit = {handleSubmit}
+                  toggleCommentAdd = {props.toggleCommentAdd}
                 />
             }
         />
@@ -63,6 +69,6 @@ const CreateComment = (props) =>{
 
 }
 
-export default CreateComment;
+export default EditComment;
 
 
